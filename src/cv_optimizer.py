@@ -26,6 +26,7 @@ from renderers import (
     generate_html
 )
 from optimizer import optimize_cv
+from services.mock_interview import MockInterviewService
 
 def parse_arguments() -> argparse.Namespace:
     """
@@ -63,6 +64,12 @@ def parse_arguments() -> argparse.Namespace:
         default="templates/cv_template.html",
         help="Ruta a la plantilla HTML Jinja2 (por defecto: templates/cv_template.html)."
     )
+    parser.add_argument(
+        "--mock-interview",
+        action="store_true",
+        default=False,
+        help="Lanza una entrevista técnica simulada con IA en lugar de optimizar el CV."
+    )
     return parser.parse_args()
 
 def main() -> None:
@@ -76,6 +83,17 @@ def main() -> None:
     # 1. Analizar argumentos de consola
     args = parse_arguments()
     
+    # ── Modo: Entrevista técnica simulada ─────────────────────────────
+    if args.mock_interview:
+        service = MockInterviewService(
+            profile_path=args.profile,
+            jd_path=args.job,
+            output_path="output/interview_transcript.md",
+        )
+        service.run_interactive()
+        return
+    
+    # ── Modo: Optimización de CV (flujo por defecto) ─────────────────
     # 2. Cargar perfil de ingeniero junior
     print(f"[INFO] Cargando perfil del ingeniero junior desde: '{args.profile}'...")
     profile = load_profile(args.profile)

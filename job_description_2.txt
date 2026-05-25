@@ -1,0 +1,30 @@
+Desarrollador Java
+
+Ubicación: Remoto 
+Compañía: Tata Consultancy Services
+
+Sobre el rol:
+¡Únete a uno de los mejores proveedores de soluciones tecnológicas del mundo! 
+Somos Tata Consultancy Services (TCS), una multinacional india con presencia global desde 1968 y una de las compañías más reconocidas dentro del Top 10 de tecnología a nivel mundial.
+Hoy buscamos nuestro próximo:
+
+Requisitos principales:
+
+- Sólida experiencia práctica en desarrollo con Java, Spring, Python o cualquier lenguaje moderno.
+- Conocimiento profundo en diseño de sistemas y arquitectura de microservicios.
+- Experiencia con trunk-based development, feature flags y estrategias de despliegue progresivo.
+- Dominio de TDD, BDD y mentalidad "automation-first" para asegurar alta cobertura y confiabilidad de pruebas.
+- Comprensión sólida de pipelines CI/CD y prácticas DevOps.
+- Experiencia realizando code reviews, evaluaciones de vulnerabilidades y aplicando principios de código seguro.
+- Familiaridad con tecnologías cloud-native: AWS, Kubernetes, Docker.
+- Excelentes habilidades de resolución de problemas y trabajo en entornos ágiles.
+- Gran capacidad de comunicación y trabajo colaborativo.
+- Nivel de inglés: C1
+
+Condiciones:
+
+- Contrato a término indefinido.
+- Horario de lunes a viernes.
+- Esquema híbrido en Medellín o Bogotá (3 veces por semana) o remoto desde cualquier ciudad de Colombia.
+- Beneficios: medicina prepagada, seguro funerario, convenios de nómina, programa de referidos, cursos en Udemy, licencias pagas, convenio para gafas y mucho más.
+
