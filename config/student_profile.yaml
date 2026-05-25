@@ -3,23 +3,27 @@
 # a las necesidades de la oferta laboral seleccionada sin añadir experiencia ficticia.
 
 personal_info:
-  full_name: "Alejandro Silva Torres"
-  email: "alejandro.silva@ufps.edu.co"
-  phone: "+57 312 345 6789"
+  full_name: "Sebastian Soledad"
+  email: "soledadsebastian07@gmail.com"
+  phone: ""
   location: "Cúcuta, Colombia"
-  linkedin: "https://linkedin.com/in/alesilvatorres"
-  github: "https://github.com/alesilvatorres"
+  linkedin: "https://linkedin.com/in/sebastiansoledad"
+  github: "https://github.com/SebasSoledad07"
 
 professional_summary: >
-  Ingeniero de Sistemas Junior con fuerte interés en el desarrollo de software,
-  sistemas distribuidos y machine learning. Experiencia práctica a través de proyectos académicos robustos y
-  una pasantía en desarrollo de backend. Apasionado por resolver problemas complejos y escribir código limpio.
+  Fullstack Developer con experiencia construyendo APIs escalables y aplicaciones fullstack usando Java y Spring Boot.
+  Fuerte enfoque en arquitectura limpia, resolución de problemas y desarrollo eficiente utilizando herramientas de IA
+  como GitHub Copilot y Claude. Cómodo trabajando en entornos de ritmo rápido, aprendiendo rápidamente nuevas
+  tecnologías y contribuyendo a sistemas backend con impacto en el mundo real.
 
 skills:
-  - "Python"
-  - "C++"
-  - "JavaScript"
-  - "SQL (PostgreSQL)"
+  - "Java (Spring Boot)"
+  - "Desarrollo de API REST"
+  - "Principios de Arquitectura Limpia (estructura por capas, separación de conceptos)"
+  - "React"
+  - "Angular"
+  - "PostgreSQL"
+  - "Supabase"
   - "Git y GitHub"
   - "FastAPI"
   - "React"
@@ -31,29 +35,43 @@ skills:
 education:
   - institution: "Universidad Francisco de Paula Santander (UFPS)"
     degree: "Ingeniería de Sistemas"
-    start_date: "2022-08"
-    end_date: "2026-06"
+    start_date: "2021-02"
+    end_date: "2027-06"
     achievements:
-      - "Promedio general sobresaliente: 9.2/10.0"
-      - "Proyecto de fin de carrera: Diseñé e implementé un microservicio de análisis predictivo de tráfico usando Python y FastAPI."
-      - "Miembro activo del Club de Programación Competitiva de la UFPS."
+      - "Promedio general sobresaliente."
+      - "Miembro activo del Club de Programación de la UFPS."
 
 experiences:
-  - company: "SoftTech Solutions"
-    role: "Pasante de Desarrollo de Software"
-    start_date: "2025-06"
+  - company: "Sistema FullStack de Reservas para manicuristas"
+    role: "FullStack Developer"
+    start_date: "2026-02"
+    end_date: "Presente"
+    achievements:
+      - "Construcción de servicios backend con Spring Boot, implementando APIs REST y lógica de negocio."
+      - "Aplicación de principios de arquitectura limpia para estructurar la aplicación."
+      - "Uso de GitHub Copilot para acelerar la creación de endpoints, refactorización y depuración."
+      - "Contenedorización de servicios utilizando Docker."
+      - "Gestión del código base con GitHub (ramas, commits, flujo de trabajo PR)."
+      - "Tecnologías utilizadas: Java Spring Boot, Spring Security, PostgreSQL, Angular 21."
+
+  - company: "Plataforma Inmobiliaria de Alquiler (En Desarrollo)"
+    role: "FullStack Developer"
+    start_date: "2026-02"
+    end_date: "Presente"
+    achievements:
+      - "Desarrollo de una aplicación web lista para la nube para listado y alquiler de propiedades."
+      - "Diseño de servicios backend utilizando Spring Boot y APIs REST."
+      - "Depuración y prueba de endpoints de API para garantizar un comportamiento constante del sistema."
+      - "Enfoque en escalabilidad y estructura del sistema para futuros despliegues en la nube."
+      - "Tecnologías utilizadas: React, Spring Boot."
+
+  - company: "Plataforma Universitaria de Cursos"
+    role: "FullStack Developer"
+    start_date: "2025-08"
     end_date: "2025-12"
     achievements:
-      - "Colaboré en la migración de un sistema monolítico heredado a microservicios utilizando Python y Docker, mejorando la modularidad del código."
-      - "Optimicé consultas SQL complejas en la base de datos PostgreSQL de desarrollo, reduciendo los tiempos de respuesta de la API en un 15%."
-      - "Implementé pruebas unitarias automatizadas con Pytest logrando un 85% de cobertura de código para los módulos críticos de autenticación."
-      - "Participé activamente en reuniones de Scrum diarias y en la estimación de historias de usuario con el equipo de desarrollo."
-
-  - company: "Facultad de Ingeniería, UFPS"
-    role: "Ayudante de Profesor (Programación Orientada a Objetos)"
-    start_date: "2024-08"
-    end_date: "2025-06"
-    achievements:
-      - "Apoyé a un grupo de 40 estudiantes semanales en la asimilación de conceptos avanzados de POO, estructuras de datos y buenas prácticas de diseño de software en C++ y Java."
-      - "Diseñé y califiqué 6 prácticas de laboratorio que modelaban problemas de software del mundo real."
-      - "Brindé asesorías personalizadas de depuración y lógica, ayudando a reducir la tasa de reprobación en un 10% respecto a periodos previos."
+      - "Diseño y desarrollo de una aplicación web para registro y gestión de cursos universitarios."
+      - "Construcción de APIs REST robustas utilizando Java y Spring Boot para la autenticación y control de accesos."
+      - "Desarrollo de una interfaz interactiva con React/Angular para la visualización de horarios y estado de inscripciones."
+      - "Diseño y normalización de la base de datos relacional en PostgreSQL."
+      - "Implementación de pruebas unitarias para garantizar el correcto funcionamiento del backend y lógica escolar."

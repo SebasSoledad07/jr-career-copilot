@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
 # Cargar variables de entorno desde el archivo .env si existe
