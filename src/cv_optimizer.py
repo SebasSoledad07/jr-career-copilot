@@ -4,6 +4,18 @@ import argparse
 # pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 
+# Reconfigurar salida estándar para soportar UTF-8 (evita errores con emojis en Windows)
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+if hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 # Cargar variables de entorno desde el archivo .env si existe
 load_dotenv()
 
@@ -27,6 +39,7 @@ from renderers import (
 )
 from optimizer import optimize_cv
 from services.mock_interview import MockInterviewService
+from services.robustness_judge import RobustnessJudgeService
 
 def parse_arguments() -> argparse.Namespace:
     """
@@ -70,6 +83,12 @@ def parse_arguments() -> argparse.Namespace:
         default=False,
         help="Lanza una entrevista técnica simulada con IA en lugar de optimizar el CV."
     )
+    parser.add_argument(
+        "--robustness",
+        action="store_true",
+        default=False,
+        help="Ejecuta el Robustness Judge para validar alucinaciones, inconsistencias y compliance ético del CV optimizado."
+    )
     return parser.parse_args()
 
 def main() -> None:
@@ -91,6 +110,17 @@ def main() -> None:
             output_path="output/interview_transcript.md",
         )
         service.run_interactive()
+        return
+    
+    # ── Modo: Robustness Check (standalone) ───────────────────────────
+    if args.robustness:
+        judge = RobustnessJudgeService(
+            profile_path=args.profile,
+            jd_path=args.job,
+            cv_path=args.output,
+            output_path="output/robustness_report.json",
+        )
+        judge.run_validation()
         return
     
     # ── Modo: Optimización de CV (flujo por defecto) ─────────────────

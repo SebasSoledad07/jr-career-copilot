@@ -25,6 +25,19 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+# Reconfigurar salida estándar para soportar UTF-8 (evita errores con emojis en Windows)
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+if hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+from google.genai import types
+
 # Cargar variables de entorno
 load_dotenv()
 
