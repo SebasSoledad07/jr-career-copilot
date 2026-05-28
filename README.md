@@ -163,6 +163,45 @@ Para exportar tu currículum a un formato PDF profesional y listo para enviar a 
 
 ---
 
+### 🤖 Entrevista Técnica Simulada (¡Nuevo Flag! 🎤)
+El proyecto incluye un simulador de entrevista interactivo con IA que utiliza chat multi-turno (Chat Memory) y se restringe a evaluar **únicamente** tecnologías declaradas en el perfil original (CV) del candidato y requeridas en la descripción del puesto (JD). Tiene un límite estricto de 7 preguntas y al final genera un reporte de feedback y exporta la transcripción de la entrevista.
+
+Para iniciar la entrevista técnica simulada:
+```bash
+python src/cv_optimizer.py --job job_description.txt --mock-interview
+```
+
+Al terminar, la transcripción se guardará automáticamente en:
+- `output/interview_transcript.md`
+
+---
+
+### ⚖️ Auditor de Robustez / Robustness Judge (¡Nuevo Flag! 🔍)
+Esta funcionalidad evalúa la calidad y veracidad del CV optimizado, comparándolo de forma minuciosa contra el perfil de origen (YAML) del candidato. A través de Structured Outputs (esquemas Pydantic), el modelo evalúa alucinaciones de la IA (datos fabricados o exagerados), inconsistencias de datos y compliance ético del currículum, entregando un veredicto general (Aprobado, Aprobado con observaciones, o Rechazado).
+
+Para auditar un CV optimizado existente:
+```bash
+python src/cv_optimizer.py --job job_description.txt --robustness
+```
+
+El reporte de auditoría completo se guardará en formato estructurado JSON en:
+- `output/robustness_report.json`
+
+---
+
+### 🎯 Plantilla Optimizada para ATS (¡Nuevo! 📝)
+Los sistemas de seguimiento de candidatos (ATS) leen mejor currículums lineales, limpios y sencillos. Para maximizar tus probabilidades de pasar estos filtros automatizados, hemos creado una plantilla diseñada específicamente para este fin:
+- **Sin emojis ni íconos:** Los caracteres especiales pueden corromper el análisis de texto en sistemas ATS antiguos.
+- **Estructura lineal clara:** Sin tablas complejas ni columnas flotantes.
+- **Tipografía estándar:** Utiliza Arial/Helvetica de alta compatibilidad.
+
+Para generar tu CV optimizado con el formato ATS:
+```bash
+python src/cv_optimizer.py --job job_description.txt --template templates/cv_ats_template.html
+```
+
+---
+
 ## 🧪 Suite de Pruebas Unitarias
 
 Para asegurar que todo el andamiaje funcione y para que aprendas sobre el Aseguramiento de Calidad (QA), el proyecto incluye pruebas unitarias automatizadas que simulan llamadas de API y verifican las salidas de texto.

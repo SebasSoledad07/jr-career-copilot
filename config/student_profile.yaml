@@ -5,7 +5,7 @@
 personal_info:
   full_name: "Sebastian Soledad"
   email: "soledadsebastian07@gmail.com"
-  phone: ""
+  phone: "+57 3243106287"
   location: "Cúcuta, Colombia"
   linkedin: "https://linkedin.com/in/sebastiansoledad"
   github: "https://github.com/SebasSoledad07"
@@ -19,17 +19,16 @@ professional_summary: >
 skills:
   - "Java (Spring Boot)"
   - "Desarrollo de API REST"
-  - "Principios de Arquitectura Limpia (estructura por capas, separación de conceptos)"
+  - "Principios de Arquitectura Limpia"
   - "React"
   - "Angular"
+  - "Typescript"
+  - "SQL"
   - "PostgreSQL"
   - "Supabase"
   - "Git y GitHub"
-  - "FastAPI"
-  - "React"
   - "Docker"
   - "Metodologías Ágiles (Scrum)"
-  - "Desarrollo de API REST"
   - "Resolución de problemas técnicos"
 
 education:
@@ -43,7 +42,7 @@ education:
 
 experiences:
   - company: "Sistema FullStack de Reservas para manicuristas"
-    role: "FullStack Developer"
+    role: "FullStack Developer (Proyecto Personal)"
     start_date: "2026-02"
     end_date: "Presente"
     achievements:
@@ -55,7 +54,7 @@ experiences:
       - "Tecnologías utilizadas: Java Spring Boot, Spring Security, PostgreSQL, Angular 21."
 
   - company: "Plataforma Inmobiliaria de Alquiler (En Desarrollo)"
-    role: "FullStack Developer"
+    role: "FullStack Developer (Proyecto Personal)"
     start_date: "2026-02"
     end_date: "Presente"
     achievements:
@@ -66,7 +65,7 @@ experiences:
       - "Tecnologías utilizadas: React, Spring Boot."
 
   - company: "Plataforma Universitaria de Cursos"
-    role: "FullStack Developer"
+    role: "FullStack Developer (Proyecto Académico)"
     start_date: "2025-08"
     end_date: "2025-12"
     achievements:
