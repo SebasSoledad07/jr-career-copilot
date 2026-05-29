@@ -1,20 +1,85 @@
 import os
+import re
 import sys
+from typing import Optional
+
 import yaml
 from google import genai
 from google.genai import types
+
 from models import OptimizedCV
 
-def optimize_cv(profile: dict, job_description: str, lang: str = "es") -> OptimizedCV:
+DEFAULT_SYSTEM_INSTRUCTION = (
+    "You are an elite career strategist for engineers. You translate junior engineer / trainee profiles into highly "
+    "targeted, recruiters-attracting resumes based on specific job descriptions, strictly without fabricating data."
+)
+
+DEFAULT_PROMPT_TEMPLATE = (
+    "You are an expert technical recruiter, engineering career coach, and master of resume building. "
+    "Your mission is to tailor an engineering junior/trainee's CV to match the target job description. "
+    "You must apply the Pygmalion Effect: frame their achievements, projects, and academic background in "
+    "an empowering, high-potential light, emphasizing technical excellence, problem-solving abilities, and dedication. "
+    "Improve word choice by using strong technical action verbs and industry keywords (e.g., 'Optimized query latency', "
+    "'Designed robust microservices', 'Spearheaded testing coverage'). "
+    "\n\n"
+    "--- CRITICAL LANGUAGE RULE ---\n"
+    "The user has selected the output language: '{language_name}' (code: {lang}).\n"
+    "YOU MUST OUTPUT ALL TEXT FIELDS (names, role titles, achievements, institution degrees, summaries, skills) "
+    "EXCLUSIVELY IN '{language_name}'. Even if the original profile or job description is in another language, "
+    "ensure the final JSON output fields are fully and naturally translated and optimized in '{language_name}'.\n"
+    "\n"
+    "--- CRITICAL SAFETY RULES (TRUTHFULNESS) ---\n"
+    "1. NEVER INVENT OR HALLUCINATE any achievements, jobs, degrees, certifications, dates, or grades that are not "
+    "present in the junior engineer's original profile. Doing so would violate professional ethics.\n"
+    "2. You may reframe, expand, and structure existing bullet points to showcase engineering rigor, impact, "
+    "and relevancy, but the underlying core data must remain 100% truthful to the junior engineer's YAML profile.\n"
+    "3. Emphasize keywords from the job description that correspond to the junior engineer's real skills, rearrange the "
+    "skills in order of relevance, and highlight tools they actually used.\n"
+    "\n"
+    "JUNIOR ENGINEER PROFILE (YAML):\n{profile_yaml}\n\n"
+    "TARGET JOB DESCRIPTION:\n{job_description}\n"
+)
+
+
+def parse_custom_prompt(content: str) -> str:
+    """
+    Extrae la plantilla de prompt desde un archivo .md (bloque ```prompt) o devuelve el texto plano.
+
+    Args:
+        content: Contenido completo del archivo de prompt personalizado.
+
+    Returns:
+        str: Plantilla de prompt lista para formatear con los placeholders del runtime.
+    """
+    text = content.strip()
+
+    match = re.search(r"```prompt\s*\n(.*?)```", text, re.DOTALL | re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+
+    match = re.search(r"^```(?:prompt|text|markdown)?\s*\n(.*?)```$", text, re.DOTALL | re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+
+    return text
+
+
+def optimize_cv(
+    profile: dict,
+    job_description: str,
+    lang: str = "es",
+    custom_prompt_path: Optional[str] = None,
+) -> OptimizedCV:
     """
     Se conecta con la API de Gemini 2.5 Flash para optimizar el CV del ingeniero junior
     basándose en la descripción del empleo utilizando la SDK oficial de google-genai.
-    
+
     Args:
-        profile (dict): Datos del perfil del ingeniero junior cargados del YAML.
-        job_description (str): Descripción del empleo objetivo.
-        lang (str): Idioma de salida para los campos del currículum ('es' o 'en').
-        
+        profile: Datos del perfil del ingeniero junior cargados del YAML.
+        job_description: Descripción del empleo objetivo.
+        lang: Idioma de salida para los campos del currículum ('es' o 'en').
+        custom_prompt_path: Ruta opcional a un archivo de prompt personalizado (.md o .txt).
+
     Returns:
         OptimizedCV: Objeto Pydantic estructurado y validado con el currículum optimizado.
     """
@@ -38,60 +103,59 @@ def optimize_cv(profile: dict, job_description: str, lang: str = "es") -> Optimi
         print(exc)
         sys.exit(1)
 
-    # Mapeo descriptivo del idioma de destino para el prompt
     language_name = "Spanish" if lang == "es" else "English"
+    profile_yaml = yaml.dump(profile, allow_unicode=True, default_flow_style=False)
 
-    # Crear el prompt optimizado aplicando el Efecto Pygmalion
-    prompt = (
-        "You are an expert technical recruiter, engineering career coach, and master of resume building. "
-        "Your mission is to tailor an engineering junior/trainee's CV to match the target job description. "
-        "You must apply the Pygmalion Effect: frame their achievements, projects, and academic background in "
-        "an empowering, high-potential light, emphasizing technical excellence, problem-solving abilities, and dedication. "
-        "Improve word choice by using strong technical action verbs and industry keywords (e.g., 'Optimized query latency', "
-        "'Designed robust microservices', 'Spearheaded testing coverage'). "
-        "\n\n"
-        "--- CRITICAL LANGUAGE RULE ---\n"
-        f"The user has selected the output language: '{language_name}' (code: {lang}).\n"
-        f"YOU MUST OUTPUT ALL TEXT FIELDS (names, role titles, achievements, institution degrees, summaries, skills) "
-        f"EXCLUSIVELY IN '{language_name}'. Even if the original profile or job description is in another language, "
-        f"ensure the final JSON output fields are fully and naturally translated and optimized in '{language_name}'.\n"
-        "\n"
-        "--- CRITICAL SAFETY RULES (TRUTHFULNESS) ---\n"
-        "1. NEVER INVENT OR HALLUCINATE any achievements, jobs, degrees, certifications, dates, or grades that are not "
-        "present in the junior engineer's original profile. Doing so would violate professional ethics.\n"
-        "2. You may reframe, expand, and structure existing bullet points to showcase engineering rigor, impact, "
-        "and relevancy, but the underlying core data must remain 100% truthful to the junior engineer's YAML profile.\n"
-        "3. Emphasize keywords from the job description that correspond to the junior engineer's real skills, rearrange the "
-        "skills in order of relevance, and highlight tools they actually used.\n"
-        "\n"
-        f"JUNIOR ENGINEER PROFILE (YAML):\n{yaml.dump(profile, allow_unicode=True)}\n\n"
-        f"TARGET JOB DESCRIPTION:\n{job_description}\n"
-    )
+    if custom_prompt_path:
+        print(f"[INFO] Cargando prompt personalizado desde: '{custom_prompt_path}'...")
+        if not os.path.exists(custom_prompt_path):
+            print(f"\n[ERROR] No se encontró el archivo de prompt personalizado en '{custom_prompt_path}'.")
+            sys.exit(1)
+        with open(custom_prompt_path, "r", encoding="utf-8") as f:
+            custom_content = f.read()
+
+        prompt_template = parse_custom_prompt(custom_content)
+        try:
+            prompt = prompt_template.format(
+                profile_yaml=profile_yaml,
+                job_description=job_description,
+                language_name=language_name,
+                lang=lang,
+            )
+        except KeyError as ke:
+            print(f"\n[ERROR] El prompt personalizado contiene un placeholder desconocido: {ke}")
+            print("Asegúrate de que los únicos marcadores con llaves sean {profile_yaml}, {job_description}, {language_name} y {lang}.")
+            sys.exit(1)
+        except Exception as exc:
+            print(f"\n[ERROR] Error al formatear el prompt personalizado: {exc}")
+            sys.exit(1)
+    else:
+        prompt = DEFAULT_PROMPT_TEMPLATE.format(
+            profile_yaml=profile_yaml,
+            job_description=job_description,
+            language_name=language_name,
+            lang=lang,
+        )
 
     print(f"[INFO] Comunicándose con Gemini 2.5 Flash para optimizar el CV (Idioma de salida: {language_name})...")
-    
+
     try:
-        # Configurar la llamada estructurada con el esquema Pydantic
         config = types.GenerateContentConfig(
             response_mime_type="application/json",
             response_schema=OptimizedCV,
-            temperature=0.2,  # Mayor consistencia y apego a los hechos reales
-            system_instruction=(
-                "You are an elite career strategist for engineers. You translate junior engineer / trainee profiles into highly "
-                "targeted, recruiters-attracting resumes based on specific job descriptions, strictly without fabricating data."
-            )
+            temperature=0.2,
+            system_instruction=DEFAULT_SYSTEM_INSTRUCTION,
         )
-        
+
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=prompt,
-            config=config
+            config=config,
         )
-        
-        # Validar la respuesta con el esquema Pydantic
+
         if not response.text:
             raise ValueError("Gemini devolvió una respuesta vacía.")
-            
+
         optimized_cv = OptimizedCV.model_validate_json(response.text)
         print("[INFO] Optimización completada con éxito por la Inteligencia Artificial.")
         return optimized_cv

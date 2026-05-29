@@ -189,6 +189,47 @@ El reporte de auditoría completo se guardará en formato estructurado JSON en:
 
 ---
 
+### 🧠 Mejora Iterativa del Prompt (¡Nuevo Flag! 🔄)
+Si el Robustness Judge detecta alucinaciones o inconsistencias, puedes generar automáticamente un **prompt refinado** que incorpore guardrails específicos para evitar que se repitan los mismos errores. El resultado se guarda en un archivo **Markdown** para que lo revises y edites manualmente antes de regenerar el CV.
+
+**Flujo recomendado (ciclo completo):**
+
+```bash
+# 1. Generar CV optimizado para la oferta
+python src/cv_optimizer.py -j job_description_1.txt
+
+# 2. Auditar alucinaciones e inconsistencias
+python src/cv_optimizer.py -j job_description_1.txt --robustness
+
+# 3. Generar prompt mejorado en Markdown
+python src/cv_optimizer.py -j job_description_1.txt --improve-prompt
+
+# 4. Revisar/editar output/improved_prompt.md y regenerar el CV
+python src/cv_optimizer.py -j job_description_1.txt --prompt-file output/improved_prompt.md
+```
+
+Para auditar el CV y generar el prompt mejorado con rutas personalizadas:
+
+```bash
+python src/cv_optimizer.py -j job_description_1.txt --robustness --report-path output/mi_reporte.json
+python src/cv_optimizer.py -j job_description_1.txt --improve-prompt --report-path output/mi_reporte.json --prompt-output output/mi_prompt.md
+```
+
+Parámetros relevantes:
+- `--improve-prompt`: Activa el servicio de optimización del prompt basado en el reporte de alucinaciones.
+- `--report-path`: Ruta al JSON del Robustness Judge (por defecto: `output/robustness_report.json`).
+- `--prompt-output`: Ruta del archivo Markdown con el prompt mejorado (por defecto: `output/improved_prompt.md`).
+- `--prompt-file`: Usa un prompt personalizado (`.md` o `.txt`) al optimizar el CV.
+
+El archivo `output/improved_prompt.md` incluye:
+- Resumen del reporte de robustez (puntuación, veredicto, alucinaciones detectadas).
+- Bloque editable ` ```prompt ` con la plantilla refinada por la IA.
+- Instrucciones para ejecutar la siguiente optimización con `--prompt-file`.
+
+> **Nota:** Conserva los placeholders `{profile_yaml}`, `{job_description}`, `{language_name}` y `{lang}` dentro del bloque de prompt al editarlo manualmente.
+
+---
+
 ### 🎯 Plantilla Optimizada para ATS (¡Nuevo! 📝)
 Los sistemas de seguimiento de candidatos (ATS) leen mejor currículums lineales, limpios y sencillos. Para maximizar tus probabilidades de pasar estos filtros automatizados, hemos creado una plantilla diseñada específicamente para este fin:
 - **Sin emojis ni íconos:** Los caracteres especiales pueden corromper el análisis de texto en sistemas ATS antiguos.
