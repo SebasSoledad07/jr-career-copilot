@@ -17,6 +17,7 @@ from cv_optimizer import (
     generate_html,
     optimize_cv
 )
+from optimizer import parse_custom_prompt, DEFAULT_PROMPT_TEMPLATE
 
 class TestCVOptimizer(unittest.TestCase):
     """
@@ -157,8 +158,8 @@ class TestCVOptimizer(unittest.TestCase):
         
         self.assertIn("# Ingeniero Junior de Prueba", markdown_output)
         self.assertIn("## Professional Summary", markdown_output)
-        self.assertIn("## Professional Experience", markdown_output)
-        self.assertIn("## Education & Academic Projects", markdown_output)
+        self.assertIn("## Projects & Practical Experience", markdown_output)
+        self.assertIn("## Education & Training", markdown_output)
 
     def test_generate_html_premium(self) -> None:
         """
@@ -175,6 +176,39 @@ class TestCVOptimizer(unittest.TestCase):
         # Comprobar la existencia de estilos de impresión claves
         self.assertIn("@media print", html_output)
         self.assertIn("page-break-inside: avoid", html_output)
+
+    def test_parse_custom_prompt_from_markdown_block(self) -> None:
+        """
+        Verifica que se extraiga correctamente el bloque ```prompt de un archivo Markdown.
+        """
+        md_content = """# Título
+Texto introductorio.
+
+```prompt
+You are a recruiter.
+Profile: {profile_yaml}
+Job: {job_description}
+Language: {language_name} ({lang})
+```
+"""
+        extracted = parse_custom_prompt(md_content)
+        self.assertIn("You are a recruiter.", extracted)
+        self.assertIn("{profile_yaml}", extracted)
+        self.assertNotIn("# Título", extracted)
+
+    def test_parse_custom_prompt_plain_text_fallback(self) -> None:
+        """
+        Verifica que un archivo de texto plano se use íntegramente como plantilla.
+        """
+        plain = "Optimize CV for {job_description} using {profile_yaml} in {language_name}."
+        self.assertEqual(parse_custom_prompt(plain), plain)
+
+    def test_default_prompt_template_has_required_placeholders(self) -> None:
+        """
+        Verifica que la plantilla por defecto contenga todos los placeholders del runtime.
+        """
+        for placeholder in ("{profile_yaml}", "{job_description}", "{language_name}", "{lang}"):
+            self.assertIn(placeholder, DEFAULT_PROMPT_TEMPLATE)
 
     @patch("google.genai.Client")
     def test_optimize_cv_with_mock_client(self, mock_client_class) -> None:

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ cv.full_name }} - CV (ATS Optimized)</title>
+    <style>
+        /*
+        Plantilla optimizada para sistemas de seguimiento de candidatos (ATS) y exportación a PDF.
+        - Utiliza fuentes estándar altamente compatibles con parsers (Arial, Helvetica).
+        - Elimina iconos, emojis e imágenes que confunden a los lectores automáticos de ATS.
+        - Mantiene una estructura lineal de una sola columna sin tablas ni elementos flotantes.
+        - Contraste de color negro/gris oscuro sobre fondo blanco para legibilidad perfecta.
+        */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #111111;
+            line-height: 1.5;
+            background-color: #f8fafc;
+            padding: 40px 20px;
+        }
+
+        .resume-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 50px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+
+        header {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .contact-info a {
+            color: #1e40af;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-item:not(:last-child)::after {
+            content: " | ";
+            margin: 0 8px;
+            color: #cbd5e1;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #cbd5e1;
+            margin: 15px 0;
+        }
+
+        section {
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #0f172a;
+            padding-bottom: 4px;
+        }
+
+        .summary-text {
+            font-size: 13.5px;
+            color: #334155;
+            text-align: justify;
+        }
+
+        .skills-list {
+            font-size: 13.5px;
+            color: #334155;
+        }
+
+        .experience-item,
+        .education-item {
+            margin-bottom: 15px;
+        }
+
+        .item-header {
+            margin-bottom: 3px;
+        }
+
+        .role-title,
+        .degree-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .company-name,
+        .institution-name {
+            font-size: 13.5px;
+            font-weight: normal;
+            color: #334155;
+        }
+
+        .company-name::before,
+        .institution-name::before {
+            content: " - ";
+        }
+
+        .item-period {
+            font-size: 12px;
+            color: #64748b;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            margin-top: 4px;
+        }
+
+        li {
+            font-size: 13px;
+            color: #334155;
+            margin-bottom: 5px;
+        }
+
+        footer {
+            margin-top: 35px;
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+
+        /* Estilos de Impresión */
+        @media print {
+            body {
+                background-color: #ffffff;
+                padding: 0;
+                color: #000000;
+            }
+
+            .resume-container {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            footer {
+                display: none;
+            }
+
+            a {
+                color: #000000;
+                text-decoration: none;
+            }
+
+            hr {
+                background-color: #000000;
+            }
+
+            h2 {
+                border-bottom: 1px solid #000000;
+            }
+
+            @page {
+                size: letter;
+                margin: 0.5in 0.5in 0.5in 0.5in;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="resume-container">
+        <header>
+            <h1>{{ cv.full_name }}</h1>
+            <div class="contact-info">
+                {% if cv.contact_info.email %}
+                <span class="contact-item">Email: <a href="mailto:{{ cv.contact_info.email }}">{{ cv.contact_info.email
+                        }}</a></span>
+                {% endif %}
+                {% if cv.contact_info.phone %}
+                <span class="contact-item">Teléfono: {{ cv.contact_info.phone }}</span>
+                {% endif %}
+                {% if cv.contact_info.location %}
+                <span class="contact-item">Ubicación: {{ cv.contact_info.location }}</span>
+                {% endif %}
+                {% if cv.contact_info.linkedin %}
+                <span class="contact-item">LinkedIn: <a href="{{ cv.contact_info.linkedin }}" target="_blank">{{
+                        cv.contact_info.linkedin }}</a></span>
+                {% endif %}
+                {% if cv.contact_info.github %}
+                <span class="contact-item">GitHub: <a href="{{ cv.contact_info.github }}" target="_blank">{{
+                        cv.contact_info.github }}</a></span>
+                {% endif %}
+            </div>
+        </header>
+
+        <section>
+            <h2>{{ headers.summary }}</h2>
+            <p class="summary-text">{{ cv.professional_summary }}</p>
+        </section>
+
+        <section>
+            <h2>{{ headers.skills }}</h2>
+            <p class="skills-list"><strong>{{ headers.skills_label }}:</strong> {{ cv.optimized_skills | join(', ') }}
+            </p>
+        </section>
+
+        <section>
+            <h2>{{ headers.experience }}</h2>
+            {% for exp in cv.experiences %}
+            <div class="experience-item">
+                <div class="item-header">
+                    <span class="role-title">{{ exp.role }}</span>
+                    <span class="company-name">{{ exp.company }}</span>
+                </div>
+                <div class="item-period">{{ exp.period }}</div>
+                <ul>
+                    {% for ach in exp.tailored_achievements %}
+                    <li>{{ ach }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </section>
+
+        <section>
+            <h2>{{ headers.education }}</h2>
+            {% for edu in cv.education %}
+            <div class="education-item">
+                <div class="item-header">
+                    <span class="degree-title">{{ edu.degree }}</span>
+                    <span class="institution-name">{{ edu.institution }}</span>
+                </div>
+                <div class="item-period">{{ edu.period }}</div>
+                <ul>
+                    {% for ach in edu.achievements %}
+                    <li>{{ ach }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </section>
+
+        <footer>
+            {{ headers.footer }}
+        </footer>
+    </div>
+</body>
+
+</html>

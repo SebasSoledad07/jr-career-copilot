@@ -163,6 +163,86 @@ Para exportar tu currículum a un formato PDF profesional y listo para enviar a 
 
 ---
 
+### 🤖 Entrevista Técnica Simulada (¡Nuevo Flag! 🎤)
+El proyecto incluye un simulador de entrevista interactivo con IA que utiliza chat multi-turno (Chat Memory) y se restringe a evaluar **únicamente** tecnologías declaradas en el perfil original (CV) del candidato y requeridas en la descripción del puesto (JD). Tiene un límite estricto de 7 preguntas y al final genera un reporte de feedback y exporta la transcripción de la entrevista.
+
+Para iniciar la entrevista técnica simulada:
+```bash
+python src/cv_optimizer.py --job job_description.txt --mock-interview
+```
+
+Al terminar, la transcripción se guardará automáticamente en:
+- `output/interview_transcript.md`
+
+---
+
+### ⚖️ Auditor de Robustez / Robustness Judge (¡Nuevo Flag! 🔍)
+Esta funcionalidad evalúa la calidad y veracidad del CV optimizado, comparándolo de forma minuciosa contra el perfil de origen (YAML) del candidato. A través de Structured Outputs (esquemas Pydantic), el modelo evalúa alucinaciones de la IA (datos fabricados o exagerados), inconsistencias de datos y compliance ético del currículum, entregando un veredicto general (Aprobado, Aprobado con observaciones, o Rechazado).
+
+Para auditar un CV optimizado existente:
+```bash
+python src/cv_optimizer.py --job job_description.txt --robustness
+```
+
+El reporte de auditoría completo se guardará en formato estructurado JSON en:
+- `output/robustness_report.json`
+
+---
+
+### 🧠 Mejora Iterativa del Prompt (¡Nuevo Flag! 🔄)
+Si el Robustness Judge detecta alucinaciones o inconsistencias, puedes generar automáticamente un **prompt refinado** que incorpore guardrails específicos para evitar que se repitan los mismos errores. El resultado se guarda en un archivo **Markdown** para que lo revises y edites manualmente antes de regenerar el CV.
+
+**Flujo recomendado (ciclo completo):**
+
+```bash
+# 1. Generar CV optimizado para la oferta
+python src/cv_optimizer.py -j job_description_1.txt
+
+# 2. Auditar alucinaciones e inconsistencias
+python src/cv_optimizer.py -j job_description_1.txt --robustness
+
+# 3. Generar prompt mejorado en Markdown
+python src/cv_optimizer.py -j job_description_1.txt --improve-prompt
+
+# 4. Revisar/editar output/improved_prompt.md y regenerar el CV
+python src/cv_optimizer.py -j job_description_1.txt --prompt-file output/improved_prompt.md
+```
+
+Para auditar el CV y generar el prompt mejorado con rutas personalizadas:
+
+```bash
+python src/cv_optimizer.py -j job_description_1.txt --robustness --report-path output/mi_reporte.json
+python src/cv_optimizer.py -j job_description_1.txt --improve-prompt --report-path output/mi_reporte.json --prompt-output output/mi_prompt.md
+```
+
+Parámetros relevantes:
+- `--improve-prompt`: Activa el servicio de optimización del prompt basado en el reporte de alucinaciones.
+- `--report-path`: Ruta al JSON del Robustness Judge (por defecto: `output/robustness_report.json`).
+- `--prompt-output`: Ruta del archivo Markdown con el prompt mejorado (por defecto: `output/improved_prompt.md`).
+- `--prompt-file`: Usa un prompt personalizado (`.md` o `.txt`) al optimizar el CV.
+
+El archivo `output/improved_prompt.md` incluye:
+- Resumen del reporte de robustez (puntuación, veredicto, alucinaciones detectadas).
+- Bloque editable ` ```prompt ` con la plantilla refinada por la IA.
+- Instrucciones para ejecutar la siguiente optimización con `--prompt-file`.
+
+> **Nota:** Conserva los placeholders `{profile_yaml}`, `{job_description}`, `{language_name}` y `{lang}` dentro del bloque de prompt al editarlo manualmente.
+
+---
+
+### 🎯 Plantilla Optimizada para ATS (¡Nuevo! 📝)
+Los sistemas de seguimiento de candidatos (ATS) leen mejor currículums lineales, limpios y sencillos. Para maximizar tus probabilidades de pasar estos filtros automatizados, hemos creado una plantilla diseñada específicamente para este fin:
+- **Sin emojis ni íconos:** Los caracteres especiales pueden corromper el análisis de texto en sistemas ATS antiguos.
+- **Estructura lineal clara:** Sin tablas complejas ni columnas flotantes.
+- **Tipografía estándar:** Utiliza Arial/Helvetica de alta compatibilidad.
+
+Para generar tu CV optimizado con el formato ATS:
+```bash
+python src/cv_optimizer.py --job job_description.txt --template templates/cv_ats_template.html
+```
+
+---
+
 ## 🧪 Suite de Pruebas Unitarias
 
 Para asegurar que todo el andamiaje funcione y para que aprendas sobre el Aseguramiento de Calidad (QA), el proyecto incluye pruebas unitarias automatizadas que simulan llamadas de API y verifican las salidas de texto.

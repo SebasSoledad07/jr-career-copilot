@@ -1,0 +1,24 @@
+Desarrollador Junior de Java
+
+Ubicación: Remoto 
+Compañía: Softtek
+
+Sobre el rol:
+Profesional Java con 1 o 2 años de experiencia en mantenimiento de aplicaciones Java, soporte aplicativo para brindar atención a incidentes de baja y media complejidad, ejecutar actividades operativas y dar seguimiento a casos bajo supervisión.
+
+Conocimientos técnicos esperados
+- Programación básica en Java SE
+- Fundamentos de POO
+- Uso básico de Spring / Spring Boot (deseable)
+
+Conocimientos elementales de:
+- SQL (consultas simples)
+- HTML/CSS/JS (si la aplicación lo requiere)
+
+Manejo inicial de:
+- Git
+- IDEs (IntelliJ, Eclipse, NetBeans)
+- Comprensión básica de logs de aplicación
+- Comunicación clara con el equipo
+- Atención al detalle
+- Enfoque en calidad y cumplimiento de SLA

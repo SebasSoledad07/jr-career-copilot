@@ -1,7 +1,20 @@
 import os
 import sys
 import argparse
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
+
+# Reconfigurar salida estándar para soportar UTF-8 (evita errores con emojis en Windows)
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+if hasattr(sys.stderr, 'reconfigure'):
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 
 # Cargar variables de entorno desde el archivo .env si existe
 load_dotenv()
@@ -25,6 +38,10 @@ from renderers import (
     generate_html
 )
 from optimizer import optimize_cv
+from services.mock_interview import MockInterviewService
+from services.robustness_judge import RobustnessJudgeService
+from services.prompt_optimizer import PromptOptimizerService
+
 
 def parse_arguments() -> argparse.Namespace:
     """
@@ -62,6 +79,39 @@ def parse_arguments() -> argparse.Namespace:
         default="templates/cv_template.html",
         help="Ruta a la plantilla HTML Jinja2 (por defecto: templates/cv_template.html)."
     )
+    parser.add_argument(
+        "--mock-interview",
+        action="store_true",
+        default=False,
+        help="Lanza una entrevista técnica simulada con IA en lugar de optimizar el CV."
+    )
+    parser.add_argument(
+        "--robustness",
+        action="store_true",
+        default=False,
+        help="Ejecuta el Robustness Judge para validar alucinaciones, inconsistencias y compliance ético del CV optimizado."
+    )
+    parser.add_argument(
+        "--improve-prompt",
+        action="store_true",
+        default=False,
+        help="Optimiza el prompt para la oferta laboral basándose en el reporte de alucinaciones."
+    )
+    parser.add_argument(
+        "--report-path",
+        default="output/robustness_report.json",
+        help="Ruta al archivo JSON de reporte de robustez (por defecto: output/robustness_report.json)."
+    )
+    parser.add_argument(
+        "--prompt-output",
+        default="output/improved_prompt.md",
+        help="Ruta para guardar el prompt mejorado (por defecto: output/improved_prompt.md)."
+    )
+    parser.add_argument(
+        "--prompt-file",
+        default=None,
+        help="Ruta a un archivo de prompt personalizado (.md o .txt) para realizar la optimización del CV."
+    )
     return parser.parse_args()
 
 def main() -> None:
@@ -75,6 +125,37 @@ def main() -> None:
     # 1. Analizar argumentos de consola
     args = parse_arguments()
     
+    # ── Modo: Entrevista técnica simulada ─────────────────────────────
+    if args.mock_interview:
+        service = MockInterviewService(
+            profile_path=args.profile,
+            jd_path=args.job,
+            output_path="output/interview_transcript.md",
+        )
+        service.run_interactive()
+        return
+    
+    # ── Modo: Robustness Check (standalone) ───────────────────────────
+    if args.robustness:
+        judge = RobustnessJudgeService(
+            profile_path=args.profile,
+            jd_path=args.job,
+            cv_path=args.output,
+            output_path=args.report_path,
+        )
+        judge.run_validation()
+        return
+    
+    # ── Modo: Optimización de Prompt (basado en alucinaciones) ────────
+    if args.improve_prompt:
+        optimizer_service = PromptOptimizerService(
+            report_path=args.report_path,
+            output_path=args.prompt_output
+        )
+        optimizer_service.run_optimization()
+        return
+    
+    # ── Modo: Optimización de CV (flujo por defecto) ─────────────────
     # 2. Cargar perfil de ingeniero junior
     print(f"[INFO] Cargando perfil del ingeniero junior desde: '{args.profile}'...")
     profile = load_profile(args.profile)
@@ -84,7 +165,7 @@ def main() -> None:
     job_description = load_job_description(args.job)
     
     # 4. Optimizar el CV mediante la API de Gemini
-    optimized_cv = optimize_cv(profile, job_description, args.lang)
+    optimized_cv = optimize_cv(profile, job_description, args.lang, custom_prompt_path=args.prompt_file)
     
     # 5. Generar formato Markdown
     print("[INFO] Generando representación en formato Markdown...")

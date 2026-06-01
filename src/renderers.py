@@ -9,16 +9,16 @@ HEADERS = {
         "summary": "Resumen Profesional",
         "skills": "Habilidades y Tecnologías",
         "skills_label": "Competencias clave",
-        "experience": "Experiencia Profesional",
-        "education": "Educación y Proyectos Académicos",
+        "experience": "Proyectos Destacados y Experiencia Práctica",
+        "education": "Educación y Formación",
         "footer": "Currículum optimizado automáticamente utilizando Inteligencia Artificial (Gemini 2.5 Flash)."
     },
     "en": {
         "summary": "Professional Summary",
         "skills": "Skills & Technologies",
         "skills_label": "Key competencies",
-        "experience": "Professional Experience",
-        "education": "Education & Academic Projects",
+        "experience": "Projects & Practical Experience",
+        "education": "Education & Training",
         "footer": "Resume automatically optimized using Artificial Intelligence (Gemini 2.5 Flash)."
     }
 }

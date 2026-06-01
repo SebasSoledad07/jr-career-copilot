@@ -1,0 +1,34 @@
+Junior Java Engineer
+
+Ubicación: Remoto 
+Compañía: Ni-Ix
+
+Sobre el rol:
+- Formarás parte del equipo de Ingeniería y reportarás a nuestro Gerente de Ingeniería.
+- Apoyarás el desarrollo de servicios de backend y API que impulsan los productos de los clientes. 
+- Trabajando bajo la estrecha supervisión de ingenieros experimentados, adquirirás experiencia práctica contribuyendo a sistemas reales, al tiempo que aprendes las mejores prácticas en desarrollo de software, escalabilidad y seguridad.
+
+Responsabilidades clave
+-  Apoyar el desarrollo de servicios de backend y API bajo la supervisión directa de ingenieros senior
+- Ayudar a escribir código limpio, fácil de mantener y bien documentado siguiendo los estándares del equipo
+- Ayudar a depurar, probar y solucionar problemas en sistemas y servicios de backend
+- Contribuir con pequeñas tareas o componentes dentro de proyectos más grandes
+- Colaborar con equipos multifuncionales, incluyendo Frontend, Producto y DevOps
+- Participar en revisiones de código y aplicar los comentarios recibidos para mejorar las habilidades técnicas
+- Ayudar a escribir pruebas unitarias y validar la funcionalidad.
+- Documentar los procesos técnicos y el trabajo de desarrollo.
+
+Requisitos
+
+- Licenciatura en Ciencias de la Computación o un campo relacionado; también se acepta estar cursando actualmente.
+- Sólidos conocimientos teóricos de Java, con al menos 0,5 años de experiencia.
+- Experiencia práctica en la creación y el uso de API RESTful: métodos HTTP, códigos de estado, JSON, manejo de solicitudes/respuestas y manejo básico de errores.
+- Conocimientos prácticos de bases de datos: haber escrito consultas SQL reales (SELECT, JOIN, WHERE, GROUP BY) o haber utilizado un ORM en código de producción; comprender la diferencia entre SQL y NoSQL
+- Sólidos conocimientos de estructuras de datos y algoritmos —matrices, mapas hash, árboles, análisis básico de Big-O— suficientes para debatir problemas sencillos de programación y razonar sobre la corrección del código.
+- Se maneja con soltura en Git en un entorno de equipo —creación de ramas, solicitudes de incorporación de cambios, revisión de código, gestión de comentarios y resolución de conflictos de fusión—; ha trabajado en un repositorio compartido con al menos otro desarrollador.
+- Experiencia práctica en la escritura de pruebas unitarias para su propio código (pytest, JUnit, Jest o equivalente), y familiaridad básica con cómo encajan las pruebas en un proceso de integración continua (CI).
+- Capacidad demostrada para implementar código en producción —incluso pequeñas funcionalidades o correcciones de errores— a través de un proceso real de revisión y despliegue; capacidad para describir claramente lo que se ha creado, cómo se revisó y cómo se probó.
+- Interés genuino en las criptomonedas, la cadena de bloques o Web3 (no importa si es autodidacta: poseer criptomonedas, leer, proyectos paralelos, hackatones) y disposición para aprender el contexto regulado de las FinTech;
+- Nivel de inglés: intermedio alto o superior, suficiente para la comunicación diaria del equipo y las discusiones de revisión de código.
+
+Plus: experiencia con Linux/línea de comandos, conceptos básicos de Docker, colas de mensajes (Kafka, RabbitMQ), plataformas en la nube (AWS, GCP), contribuciones a proyectos de código abierto, participación en hackatones o un portafolio público activo en GitHub.
